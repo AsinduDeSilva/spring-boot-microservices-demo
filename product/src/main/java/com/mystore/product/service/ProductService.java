@@ -14,5 +14,5 @@ public interface ProductService {
 
     String deleteProduct(Integer productId);
 
-    ProductDTO getProductById(Integer productId);
+    ProductDTO getProductByProductId(Integer productId);
 }

@@ -14,6 +14,6 @@ public interface InventoryService {
 
     String deleteItem(Integer itemId);
 
-    InventoryDTO getItemById(Integer itemId);
+    InventoryDTO getItemByItemId(Integer itemId);
 
 }

@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO getProductById(Integer productId) {
+    public ProductDTO getProductByProductId(Integer productId) {
         Product product = productRepo.getProductById(productId);
         return modelMapper.map(product, ProductDTO.class);
     }
