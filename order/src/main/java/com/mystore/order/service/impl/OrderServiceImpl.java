@@ -22,17 +22,14 @@ import java.util.List;
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
-    private final WebClient inventoryWebClient;
-
-    private final WebClient productWebClient;
+    private final WebClient webClient;
 
     private final OrderRepo orderRepo;
 
     private final ModelMapper modelMapper;
 
-    public OrderServiceImpl(WebClient inventoryWebClient, WebClient productWebClient, OrderRepo orderRepo, ModelMapper modelMapper) {
-        this.inventoryWebClient = inventoryWebClient;
-        this.productWebClient = productWebClient;
+    public OrderServiceImpl(WebClient webClient, OrderRepo orderRepo, ModelMapper modelMapper) {
+        this.webClient = webClient;
         this.orderRepo = orderRepo;
         this.modelMapper = modelMapper;
     }
@@ -46,16 +43,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponse saveOrder(OrderDTO orderDTO) {
         try{
-            InventoryDTO inventoryResponse = inventoryWebClient.get()
-                    .uri(uriBuilder -> uriBuilder.path("/{itemId}").build(orderDTO.getItemId()))
+            InventoryDTO inventoryResponse = webClient.get()
+                    .uri(uriBuilder -> uriBuilder.path("/inventory/{itemId}").build(orderDTO.getItemId()))
                     .retrieve()
                     .bodyToMono(InventoryDTO.class)
                     .block();
 
             assert inventoryResponse != null;
 
-            ProductDTO productResponse = productWebClient.get()
-                    .uri(uriBuilder -> uriBuilder.path("/{productId}").build(inventoryResponse.getProductId()))
+            ProductDTO productResponse = webClient.get()
+                    .uri(uriBuilder -> uriBuilder.path("/product/{productId}").build(inventoryResponse.getProductId()))
                     .retrieve()
                     .bodyToMono(ProductDTO.class)
                     .block();
